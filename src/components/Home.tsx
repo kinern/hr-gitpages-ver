@@ -20,29 +20,6 @@ import axios from 'axios';
 const theme = createTheme();
 
 
-const cardData = [
-  {
-    'imageUrl' : 'https://source.unsplash.com/random',
-    'title' : 'Heading',
-    'description' : 'This is a media card. You can use this section to describe the content.',
-  },
-  {
-    'imageUrl' : 'https://source.unsplash.com/random',
-    'title' : 'Heading',
-    'description' : 'This is a media card. You can use this section to describe the content.',
-  },
-  {
-    'imageUrl' : 'https://source.unsplash.com/random',
-    'title' : 'Heading',
-    'description' : 'This is a media card. You can use this section to describe the content.',
-  },
-  {
-    'imageUrl' : 'https://source.unsplash.com/random',
-    'title' : 'Heading',
-    'description' : 'This is a media card. You can use this section to describe the content.',
-  },
-];
-
 const renderCards = (cardData :any, handleClickOpen : any) => {
 
   return (
@@ -63,7 +40,10 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
               {item.title}
             </Typography>
             <Typography>
-              {item.topics}
+              {item.topics.join(", ")}
+            </Typography>
+            <Typography>
+              {item.url}
             </Typography>
           </CardContent>
           <CardActions>
@@ -76,33 +56,37 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
   )
 }
 
-const ParseDataToCardList = (data: any) => {
-  console.log(data);
+const ParseDataToCardList = (result: any) => {
+  console.log(result);
   const cardList : Array<Object> = [
     {
       'imageUrl' : 'https://source.unsplash.com/random',
-      'title' : 'Heading1',
-      'topics' : 'This is a media card. You can use this section to describe the content.',
+      'title' : 'House Rules Committee Meeting on Debt Limit Suspension and Other Legislation',
+      'topics' : ["debt ceiling", "senate amendment", "rules committee report"],
+      'url': 'https://www.c-span.org/video/?515287-1/house-rules-committee-meeting-debt-limit-suspension-legislation'
     },
     {
       'imageUrl' : 'https://source.unsplash.com/random',
-      'title' : 'Heading2',
-      'topics' : 'This is a media card. You can use this section to describe the content.',
+      'title' : 'House Rules Committee Meeting on Debt Limit Suspension and Other Legislation',
+      'topics' : ["debt ceiling", "senate amendment", "rules committee report"],
+      'url': 'https://www.c-span.org/video/?515287-1/house-rules-committee-meeting-debt-limit-suspension-legislation'
     },
     {
       'imageUrl' : 'https://source.unsplash.com/random',
-      'title' : 'Heading3',
-      'topics' : 'This is a media card. You can use this section to describe the content.',
+      'title' : 'House Rules Committee Meeting on Debt Limit Suspension and Other Legislation',
+      'topics' : ["debt ceiling", "senate amendment", "rules committee report"],
+      'url': 'https://www.c-span.org/video/?515287-1/house-rules-committee-meeting-debt-limit-suspension-legislation'
     },
     {
       'imageUrl' : 'https://source.unsplash.com/random',
-      'title' : 'Heading4',
-      'topics' : 'This is a media card. You can use this section to describe the content.',
+      'title' : 'House Rules Committee Meeting on Debt Limit Suspension and Other Legislation',
+      'topics' : ["debt ceiling", "senate amendment", "rules committee report"],
+      'url': 'https://www.c-span.org/video/?515287-1/house-rules-committee-meeting-debt-limit-suspension-legislation'
     },
   ];
 
   /*
-  data.forEach(function (item: any) {
+  result.data.forEach(function (item: any) {
     const el = {
       'imageUrl' : 'https://source.unsplash.com/random', 
       'title': item.name,
@@ -124,14 +108,16 @@ export default function Home() {
 
   //Note: Immediately Invoked Function Expression
   useEffect(() => {
-      async function fetchMyAPI() {
+      async function fetchAllArticles() {
         const result = await axios(
-          'http://localhost:5000/news-reader/all', //Change to server request
-        );
-        const cardData = ParseDataToCardList(result.data);
+          'http://localhost:5000/news-reader/all', //Change to correct server request
+        ).catch((err)=>{
+          console.log("request failed.");
+        });
+        const cardData = ParseDataToCardList(result);
         setCardList(cardData);
       };
-      fetchMyAPI();
+      fetchAllArticles();
       },
     []
   );
@@ -204,6 +190,7 @@ export default function Home() {
         </Typography>
         <Copyright />
       </Box>
+
       {/* End footer */}
     </ThemeProvider>
     <Details
