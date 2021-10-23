@@ -11,7 +11,8 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
+import {makeStyles} from '@mui/styles';
 
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 
@@ -20,8 +21,24 @@ import axios from 'axios';
 
 import NavBar from './NavBar';
 
-
 const theme = createTheme();
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme : any) => ({
+  toolbar: {
+    backgroundColor: '#5B8C5A',
+  },
+  intro: {
+    margin: "20vh 0 20vh 0",
+  },
+  font: {
+    color: "#222",
+  },
+  subFont : {
+    color: "#696969",
+  }
+}));
 
 const renderCards = (cardData :any, handleClickOpen : any) => {
 
@@ -30,9 +47,9 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
       {cardData.map((item : any)=>(
         <Grid item key={item.title} xs={12} sm={12} md={12}>
         <Card
-          sx={{ height: '100%', display: 'flex', flexDirection: 'row' }}
+          sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}
         >
-          <Box sx={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <Box sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
             <CardContent sx={{ flexGrow: 1 }}>
               <Typography gutterBottom variant="h5" component="h2">
                 {item.title}
@@ -109,13 +126,13 @@ const ParseDataToCardList = (result: any) => {
   return cardList;
 }
 
-
 //Main component
 export default function Home() {
 
+  const classes = useStyles();
+
   const [open, setOpen] = useState<Boolean>(false);
   const [cardList, setCardList] = useState<Array<Object>>([]);
-
 
   //Get initial records from DynamoDB
   useEffect(() => {
@@ -148,13 +165,28 @@ export default function Home() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
+      {/* Side Navigation Bar */}
+      <NavBar />
+
+      {/* Hero unit */}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          bgcolor: 'background.paper',
+          flexGrow: 1, 
+          p: 0, 
+          width: { sm: `calc(100% + ${drawerWidth}px)`}
+        }}
+      >
+
       <AppBar 
       sx={{
         position: 'fixed',
         zIndex: theme.zIndex.drawer + 1,
       }}
       >
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <StickyNote2Icon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
             News Reader
@@ -162,56 +194,45 @@ export default function Home() {
         </Toolbar>
       </AppBar>
 
-      {/* Side Navigation Bar */}
-      <NavBar />
-
-        {/* Hero unit */}
-        <Box
-          sx={{
-            bgcolor: 'background.paper',
-            flexGrow: 1,
-            p: 3
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="text.primary"
-              gutterBottom
-            >
-              News Reader
-            </Typography>
-            <Typography variant="h5" align="center" color="text.secondary" paragraph>
-              News Reader combines Symbl.ai and ML to create and store compact 
-              summaries from news audio clips.
-              The following are examples using clips from C-Span.
-            </Typography>
-          </Container>
-
-        <Container sx={{ py: 8 }} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-              {renderCards(cardList, handleClickOpen)}
-          </Grid>
+        <Toolbar />
+        <Container className={classes.intro} maxWidth="sm">
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            className={classes.font}
+            gutterBottom
+          >
+            News Reader
+          </Typography>
+          <Typography variant="h5" align="center" className={classes.subFont} paragraph>
+            News Reader combines Symbl.ai and ML to create and store compact 
+            summaries from news audio clips.
+            The following are examples using clips from C-Span.
+          </Typography>
         </Container>
-      
-        </Box>
 
-      {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Thanks for checking out our hackathon project!
-        </Typography>
-        <Copyright />
+      <Container sx={{ py: 8 }} maxWidth="md">
+        {/* End hero unit */}
+        <Grid container spacing={4}>
+            {renderCards(cardList, handleClickOpen)}
+        </Grid>
+      </Container>
+    
       </Box>
+
+    {/* Footer */}
+    <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+      <Typography
+        variant="subtitle1"
+        align="center"
+        color="text.secondary"
+        component="p"
+      >
+        Thanks for checking out our hackathon project!
+      </Typography>
+      <Copyright />
+    </Box>
 
       {/* End footer */}
     </ThemeProvider>
