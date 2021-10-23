@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -13,12 +12,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-//import {Theme, makeStyles} from '@mui/styles';
+
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+
 import Details from './Details';
 import axios from 'axios';
 
 import NavBar from './NavBar';
-
 
 
 const theme = createTheme();
@@ -63,8 +63,9 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
 }
 
 const ParseDataToCardList = (result: any) => {
-  console.log(result);
-  const cardList : Array<Object> = [
+
+  //Test data
+  var cardList : Array<Object> = [
     {
       'imageUrl' : 'https://source.unsplash.com/random',
       'title' : 'House Rules Committee Meeting on Debt Limit Suspension and Other Legislation',
@@ -91,43 +92,36 @@ const ParseDataToCardList = (result: any) => {
     },
   ];
 
-  /*
-  result.data.forEach(function (item: any) {
+  const Items = result.data.Items; 
+  cardList = [];
+
+  //Iterate through DynamoDB table items.
+  Items.forEach(function (item: any) {
     const el = {
       'imageUrl' : 'https://source.unsplash.com/random', 
       'title': item.name,
-      'description' : 'This is a media card. You can use this section to describe the content.',
+      'topics': item.topics,
+      'url': item.url
     };
     cardList.push(el);
   });
-  */
 
   return cardList;
 }
 
-/*
-const useStyles = makeStyles((theme: Theme)=>({ 
-  container : { 
-      backgroundColor: theme.palette.background.paper, 
-      padding : theme.spacing(8,0,6)
-      }
-  }
-));
-*/
 
+//Main component
 export default function Home() {
-
-  //const classes = useStyles(); 
 
   const [open, setOpen] = useState<Boolean>(false);
   const [cardList, setCardList] = useState<Array<Object>>([]);
 
 
-  //Note: Immediately Invoked Function Expression
+  //Get initial records from DynamoDB
   useEffect(() => {
       async function fetchAllArticles() {
         const result = await axios(
-          'http://localhost:5000/news-reader/all', //Change to correct server request
+          'http://localhost:5000/news-reader/all',
         ).catch((err)=>{
           console.log("request failed.");
         });
@@ -147,6 +141,7 @@ export default function Home() {
   const handleClose = (value : any) => {
     setOpen(false);
   };
+
 
   return (
     <div>
@@ -169,7 +164,6 @@ export default function Home() {
 
       {/* Side Navigation Bar */}
       <NavBar />
-
 
         {/* Hero unit */}
         <Box
@@ -205,7 +199,6 @@ export default function Home() {
         </Container>
       
         </Box>
-
 
       {/* Footer */}
       <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
