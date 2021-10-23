@@ -13,12 +13,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+//import {Theme, makeStyles} from '@mui/styles';
 import Details from './Details';
 import axios from 'axios';
 
+import NavBar from './NavBar';
+
+
 
 const theme = createTheme();
-
 
 const renderCards = (cardData :any, handleClickOpen : any) => {
 
@@ -27,28 +30,31 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
       {cardData.map((item : any)=>(
         <Grid item key={item.title} xs={12} sm={12} md={12}>
         <Card
-          sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+          sx={{ height: '100%', display: 'flex', flexDirection: 'row' }}
         >
+          <Box sx={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+            <CardContent sx={{ flexGrow: 1 }}>
+              <Typography gutterBottom variant="h5" component="h2">
+                {item.title}
+              </Typography>
+              <Typography>
+                {item.topics.join(", ")}
+              </Typography>
+              <Typography>
+                {item.url}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small" onClick={handleClickOpen}>Details</Button>
+            </CardActions>
+          </Box>
           <CardMedia
+            className="card-img"
             component="img"
-            height="120"
+            sx={{width:'180px', height: '240px'}}
             image={item.imageUrl}
             alt="random"
           />
-          <CardContent sx={{ flexGrow: 1 }}>
-            <Typography gutterBottom variant="h5" component="h2">
-              {item.title}
-            </Typography>
-            <Typography>
-              {item.topics.join(", ")}
-            </Typography>
-            <Typography>
-              {item.url}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={handleClickOpen}>Details</Button>
-          </CardActions>
         </Card>
       </Grid>
       ))}
@@ -99,8 +105,19 @@ const ParseDataToCardList = (result: any) => {
   return cardList;
 }
 
+/*
+const useStyles = makeStyles((theme: Theme)=>({ 
+  container : { 
+      backgroundColor: theme.palette.background.paper, 
+      padding : theme.spacing(8,0,6)
+      }
+  }
+));
+*/
 
 export default function Home() {
+
+  //const classes = useStyles(); 
 
   const [open, setOpen] = useState<Boolean>(false);
   const [cardList, setCardList] = useState<Array<Object>>([]);
@@ -135,7 +152,13 @@ export default function Home() {
     <div>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position="relative">
+
+      <AppBar 
+      sx={{
+        position: 'fixed',
+        zIndex: theme.zIndex.drawer + 1,
+      }}
+      >
         <Toolbar>
           <StickyNote2Icon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
@@ -144,15 +167,19 @@ export default function Home() {
         </Toolbar>
       </AppBar>
 
-      <main>
+      {/* Side Navigation Bar */}
+      <NavBar />
+
+
         {/* Hero unit */}
         <Box
           sx={{
             bgcolor: 'background.paper',
-            pt: 8,
-            pb: 6,
+            flexGrow: 1,
+            p: 3
           }}
         >
+          <Toolbar />
           <Container maxWidth="sm">
             <Typography
               component="h1"
@@ -169,14 +196,16 @@ export default function Home() {
               The following are examples using clips from C-Span.
             </Typography>
           </Container>
-        </Box>
+
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
               {renderCards(cardList, handleClickOpen)}
           </Grid>
         </Container>
-      </main>
+      
+        </Box>
+
 
       {/* Footer */}
       <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
