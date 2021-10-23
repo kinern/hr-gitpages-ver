@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
@@ -14,18 +14,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Details from './Details';
+import axios from 'axios';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © NewsReader Hackathon Team '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
+
 
 const cardData = [
   {
@@ -50,42 +43,99 @@ const cardData = [
   },
 ];
 
-const renderCards = (handleClickOpen : any) => {
+const renderCards = (cardData :any, handleClickOpen : any) => {
+
   return (
     <React.Fragment>
-      {cardData.map((item)=>(
-                      <Grid item key={item.title} xs={12} sm={12} md={12}>
-                      <Card
-                        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                      >
-                        <CardMedia
-                          component="img"
-                          height="120"
-                          image={item.imageUrl}
-                          alt="random"
-                        />
-                        <CardContent sx={{ flexGrow: 1 }}>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            {item.title}
-                          </Typography>
-                          <Typography>
-                            {item.description}
-                          </Typography>
-                        </CardContent>
-                        <CardActions>
-                          <Button size="small" onClick={handleClickOpen}>Details</Button>
-                        </CardActions>
-                      </Card>
-                    </Grid>
+      {cardData.map((item : any)=>(
+        <Grid item key={item.title} xs={12} sm={12} md={12}>
+        <Card
+          sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+        >
+          <CardMedia
+            component="img"
+            height="120"
+            image={item.imageUrl}
+            alt="random"
+          />
+          <CardContent sx={{ flexGrow: 1 }}>
+            <Typography gutterBottom variant="h5" component="h2">
+              {item.title}
+            </Typography>
+            <Typography>
+              {item.topics}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button size="small" onClick={handleClickOpen}>Details</Button>
+          </CardActions>
+        </Card>
+      </Grid>
       ))}
     </React.Fragment>
   )
+}
+
+const ParseDataToCardList = (data: any) => {
+  console.log(data);
+  const cardList : Array<Object> = [
+    {
+      'imageUrl' : 'https://source.unsplash.com/random',
+      'title' : 'Heading1',
+      'topics' : 'This is a media card. You can use this section to describe the content.',
+    },
+    {
+      'imageUrl' : 'https://source.unsplash.com/random',
+      'title' : 'Heading2',
+      'topics' : 'This is a media card. You can use this section to describe the content.',
+    },
+    {
+      'imageUrl' : 'https://source.unsplash.com/random',
+      'title' : 'Heading3',
+      'topics' : 'This is a media card. You can use this section to describe the content.',
+    },
+    {
+      'imageUrl' : 'https://source.unsplash.com/random',
+      'title' : 'Heading4',
+      'topics' : 'This is a media card. You can use this section to describe the content.',
+    },
+  ];
+
+  /*
+  data.forEach(function (item: any) {
+    const el = {
+      'imageUrl' : 'https://source.unsplash.com/random', 
+      'title': item.name,
+      'description' : 'This is a media card. You can use this section to describe the content.',
+    };
+    cardList.push(el);
+  });
+  */
+
+  return cardList;
 }
 
 
 export default function Home() {
 
   const [open, setOpen] = useState<Boolean>(false);
+  const [cardList, setCardList] = useState<Array<Object>>([]);
+
+
+  //Note: Immediately Invoked Function Expression
+  useEffect(() => {
+      async function fetchMyAPI() {
+        const result = await axios(
+          'http://localhost:5000/news-reader/all', //Change to server request
+        );
+        const cardData = ParseDataToCardList(result.data);
+        setCardList(cardData);
+      };
+      fetchMyAPI();
+      },
+    []
+  );
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -137,23 +187,20 @@ export default function Home() {
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-              {renderCards(handleClickOpen)}
+              {renderCards(cardList, handleClickOpen)}
           </Grid>
         </Container>
       </main>
 
       {/* Footer */}
       <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
         <Typography
           variant="subtitle1"
           align="center"
           color="text.secondary"
           component="p"
         >
-          Something here to give the footer a purpose!
+          Thanks for checking out our hackathon project!
         </Typography>
         <Copyright />
       </Box>
@@ -164,5 +211,15 @@ export default function Home() {
         onClose={handleClose}
     />
     </div>
+  );
+}
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'Copyright © NewsReader Hackathon Team '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
   );
 }
