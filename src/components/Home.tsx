@@ -118,7 +118,7 @@ export default function Home() {
   useEffect(() => {
       async function fetchAllArticles() {
         const result = await axios(
-          '/news-reader/people',
+          'http://localhost:5000/news-reader/people',
         ).catch((err)=>{
           console.log("request failed.");
         });
@@ -133,11 +133,9 @@ export default function Home() {
 
   const handleClickOpen = (fullName : string) => {
     //Get person's video clip data, update personData
-    //getPersonData(fullName);
-    setOpen(true);
+    getPersonData(fullName);
   };
 
-  /*
   const getPersonData = (fullName : string) => {
     async function fetchClipsByPerson () {
       const result : any = await axios.post(
@@ -148,14 +146,13 @@ export default function Home() {
       if (result != null){
         setPersonData(result);
       } else {
-        const data = {items: [ {name: 'clip1'},  {name: 'clip1'}, {name: 'clip1'}]};
+        const data = {};
         setPersonData(data);
       }
-      console.log(personData);
+      setOpen(true);
     };
     fetchClipsByPerson();
   }
-  */
 
 
   const handleClose = (value : any) => {

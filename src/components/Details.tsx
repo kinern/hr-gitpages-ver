@@ -29,48 +29,27 @@ const renderTopicClips = (topicClips : any) => {
   );
 }
 
+const getTopicArrFromData = (personData: any) => {
+  const topicArray : Array<any> = [];
+  personData.forEach((item: any)=>{
+    if (topicArray[item.TopicName] == null){
+      topicArray[item.TopicName] = {TopicName: item.TopicName, clips: []};
+    } 
+    topicArray[item.TopicName].clips.push(item);
+  });
+  return topicArray;
+}
+
+
 function Details(props : any) {
   const { onClose, selectedValue, open, data } = props;
-  var topicClips = data.topicClips; //Needs to be formatted
+  const topicArray = (data.hasOwnProperty('data'))? getTopicArrFromData(data.data) : [];
 
   const handleClose = () => {
     onClose(selectedValue);
   };
 
-
-  //TestData
-
-  topicClips = [
-    {TopicName: 'Taxes', clips: [
-      {
-        VideoName: 'Meeting About Taxes',
-        VideoURL: 'http://www.google.com',
-        StartTime: '00:00:00',
-        EndTime: '00:01:00'
-      },
-      {
-        VideoName: 'Second Meeting About Taxes',
-        VideoURL: 'http://www.google.com',
-        StartTime: '00:00:00',
-        EndTime: '00:01:00'
-      }
-    ]}, 
-    {TopicName: 'Healthcare', clips: [
-      {
-        VideoName: 'Meeting About Healthcare',
-        VideoURL: 'http://www.google.com',
-        StartTime: '00:00:00',
-        EndTime: '00:01:00'
-      },
-      {
-        VideoName: 'Second Meeting About Healthcare',
-        VideoURL: 'http://www.google.com',
-        StartTime: '00:00:00',
-        EndTime: '00:01:00'
-      }
-    ]}
-  ];
-
+  console.log(topicArray);
 
   return (
     <Dialog onClose={handleClose} open={open} scroll={'body'}>
@@ -82,7 +61,7 @@ function Details(props : any) {
         </Box>
       </Box>
       <Typography variant="h6">Recent Discussions</Typography>
-      {renderTopicClips(topicClips)}
+      {renderTopicClips(topicArray)}
     </Dialog>
   );
 }
