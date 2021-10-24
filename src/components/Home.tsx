@@ -138,7 +138,7 @@ export default function Home() {
   useEffect(() => {
       async function fetchAllArticles() {
         const result = await axios(
-          'http://localhost:5000/news-reader/all',
+          '/news-reader/all',
         ).catch((err)=>{
           console.log("request failed.");
         });
