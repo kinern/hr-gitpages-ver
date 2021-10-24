@@ -5,10 +5,13 @@ import { Typography, Link, Box } from '@mui/material';
 
 
 const renderTopicClips = (topicClips : any) => {
+  console.log(topicClips);
   return (
     <div>
       {  
         topicClips.map((topic : any)=>{
+          console.log("here");
+          console.log(topic);
           return (
             <div>
               <Typography variant="h6">{topic.TopicName}</Typography>
@@ -30,13 +33,14 @@ const renderTopicClips = (topicClips : any) => {
 }
 
 const getTopicArrFromData = (personData: any) => {
-  const topicArray : Array<any> = [];
+  const topicObj : any = {};
   personData.forEach((item: any)=>{
-    if (topicArray[item.TopicName] == null){
-      topicArray[item.TopicName] = {TopicName: item.TopicName, clips: []};
+    if (!topicObj.hasOwnProperty(item.TopicName)){
+      topicObj[item.TopicName] = {TopicName: item.TopicName, clips: []};
     } 
-    topicArray[item.TopicName].clips.push(item);
+    topicObj[item.TopicName].clips.push(item);
   });
+  let topicArray = Object.keys(topicObj).map((k) => topicObj[k])
   return topicArray;
 }
 
@@ -45,19 +49,19 @@ function Details(props : any) {
   const { onClose, selectedValue, open, data } = props;
   const topicArray = (data.hasOwnProperty('data'))? getTopicArrFromData(data.data) : [];
 
+  //TODO : get fullname from person record
+  const fullName = (data.hasOwnProperty('data'))? topicArray[0].clips[0].PersonFullName : "";
+
   const handleClose = () => {
     onClose(selectedValue);
   };
-
-  console.log(topicArray);
 
   return (
     <Dialog onClose={handleClose} open={open} scroll={'body'}>
       <Box sx={{ display: 'flex', margin: '10px' }}> 
         <img src='/images/unsplash-senate-building.jpg' height="200px" width="200px" />
         <Box> 
-          <Typography variant="h4">John Smith</Typography>
-          <Typography>Basic Information on John Smith</Typography>
+          <Typography variant="h4">{fullName}</Typography>
         </Box>
       </Box>
       <Typography variant="h6">Recent Discussions</Typography>

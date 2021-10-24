@@ -47,10 +47,10 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
       {cardData.map((item : any)=>(
         <Grid item key={item.title} xs={12} sm={6} md={4}>
         <Card
-          sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}
+          sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}
         >
           <Box sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
-            <CardContent sx={{ flexGrow: 1 }}>
+            <CardContent>
               <CardMedia
               className="card-img"
               component="img"
@@ -59,7 +59,7 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
               alt="random"
               />
             </CardContent>
-            <CardActions>
+            <CardActions sx={{display:'flex', justifyContent: 'center', alignItems: 'center'}}>
               <Button size="small" onClick={()=>handleClickOpen(item.FullName)}>{item.FullName}</Button>
             </CardActions>
           </Box>
@@ -72,6 +72,7 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
 
 const ParseDataToCardList = (result: any) => {
 
+  /*
   //Test data
   var cardList : Array<Object> = [
     {
@@ -84,23 +85,25 @@ const ParseDataToCardList = (result: any) => {
       
     }
   ];
+  */
+  
+  if (result === undefined || !result.hasOwnProperty('data')){
+    console.log("Err - Person query result undefined.");
+    return [];
+  }
 
-  /*
   const Items = result.data.Items; 
-  cardList = [];
+  const cardList : any = [];
 
   //Iterate through DynamoDB table items.
   Items.forEach(function (item: any) {
     const el = {
-      'imageUrl' : 'https://source.unsplash.com/random', 
-      'title': item.name,
-      'topics': item.topics,
-      'url': item.url
+      'imageUrl' : '/images/unsplash-senate-building.jpg', 
+      'FullName' : item.FullName
     };
     cardList.push(el);
   });
 
-  */
 
   return cardList;
 }
@@ -118,7 +121,7 @@ export default function Home() {
   useEffect(() => {
       async function fetchAllArticles() {
         const result = await axios(
-          'http://localhost:5000/news-reader/people',
+          '/news-reader/people',
         ).catch((err)=>{
           console.log("request failed.");
         });
@@ -139,7 +142,7 @@ export default function Home() {
   const getPersonData = (fullName : string) => {
     async function fetchClipsByPerson () {
       const result : any = await axios.post(
-        'http://localhost:5000/news-reader/clips', {params : {fullName}}
+        '/news-reader/clips', {params : {fullName}}
       ).catch((err)=>{
         console.log("request failed.");
       });
@@ -166,7 +169,7 @@ export default function Home() {
       <CssBaseline />
 
       {/* Side Navigation Bar */}
-      <NavBar />
+      {/*<NavBar />*/}
 
       {/* Hero unit */}
       <Box
@@ -176,7 +179,7 @@ export default function Home() {
           bgcolor: 'background.paper',
           flexGrow: 1, 
           p: 0, 
-          width: { sm: `calc(100% + ${drawerWidth}px)`}
+          //width: { sm: `calc(100% + ${drawerWidth}px)`}
         }}
       >
 
@@ -196,7 +199,7 @@ export default function Home() {
 
         <Toolbar />
 
-      {/* 
+       
       <Container className={classes.intro} maxWidth="sm">
         <Typography
           component="h1"
@@ -213,10 +216,10 @@ export default function Home() {
           The following are examples using clips from C-Span.
         </Typography>
       </Container>
-      */}
+      
 
 
-      <Container sx={{ py: 8 }} maxWidth="md">
+      <Container sx={{ py: 6 }} maxWidth="md">
         {/* End hero unit */}
         <Grid container spacing={4}>
             {renderCards(cardList, handleClickOpen)}
