@@ -45,33 +45,24 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
   return (
     <React.Fragment>
       {cardData.map((item : any)=>(
-        <Grid item key={item.title} xs={12} sm={12} md={12}>
+        <Grid item key={item.title} xs={12} sm={6} md={4}>
         <Card
           sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}
         >
           <Box sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
             <CardContent sx={{ flexGrow: 1 }}>
-              <Typography gutterBottom variant="h5" component="h2">
-                {item.title}
-              </Typography>
-              <Typography>
-                {item.topics.join(", ")}
-              </Typography>
-              <Typography>
-                {item.url}
-              </Typography>
+              <CardMedia
+              className="card-img"
+              component="img"
+              sx={{width:'180px', height: '240px'}}
+              image={item.imageUrl}
+              alt="random"
+              />
             </CardContent>
             <CardActions>
-              <Button size="small" onClick={handleClickOpen}>Details</Button>
+              <Button size="small" onClick={()=>handleClickOpen(item.FullName)}>{item.FullName}</Button>
             </CardActions>
           </Box>
-          <CardMedia
-            className="card-img"
-            component="img"
-            sx={{width:'180px', height: '240px'}}
-            image={item.imageUrl}
-            alt="random"
-          />
         </Card>
       </Grid>
       ))}
@@ -84,31 +75,17 @@ const ParseDataToCardList = (result: any) => {
   //Test data
   var cardList : Array<Object> = [
     {
-      'imageUrl' : 'https://source.unsplash.com/random',
-      'title' : 'House Rules Committee Meeting on Debt Limit Suspension and Other Legislation',
-      'topics' : ["debt ceiling", "senate amendment", "rules committee report"],
-      'url': 'https://www.c-span.org/video/?515287-1/house-rules-committee-meeting-debt-limit-suspension-legislation'
+      'imageUrl' : '/images/unsplash-senate-building.jpg',
+      'FullName' : 'John Smith',
     },
     {
-      'imageUrl' : 'https://source.unsplash.com/random',
-      'title' : 'House Rules Committee Meeting on Debt Limit Suspension and Other Legislation',
-      'topics' : ["debt ceiling", "senate amendment", "rules committee report"],
-      'url': 'https://www.c-span.org/video/?515287-1/house-rules-committee-meeting-debt-limit-suspension-legislation'
-    },
-    {
-      'imageUrl' : 'https://source.unsplash.com/random',
-      'title' : 'House Rules Committee Meeting on Debt Limit Suspension and Other Legislation',
-      'topics' : ["debt ceiling", "senate amendment", "rules committee report"],
-      'url': 'https://www.c-span.org/video/?515287-1/house-rules-committee-meeting-debt-limit-suspension-legislation'
-    },
-    {
-      'imageUrl' : 'https://source.unsplash.com/random',
-      'title' : 'House Rules Committee Meeting on Debt Limit Suspension and Other Legislation',
-      'topics' : ["debt ceiling", "senate amendment", "rules committee report"],
-      'url': 'https://www.c-span.org/video/?515287-1/house-rules-committee-meeting-debt-limit-suspension-legislation'
-    },
+      'imageUrl' : '/images/unsplash-senate-building.jpg',
+      'FullName' : 'Joe Perry',
+      
+    }
   ];
 
+  /*
   const Items = result.data.Items; 
   cardList = [];
 
@@ -123,6 +100,8 @@ const ParseDataToCardList = (result: any) => {
     cardList.push(el);
   });
 
+  */
+
   return cardList;
 }
 
@@ -133,12 +112,13 @@ export default function Home() {
 
   const [open, setOpen] = useState<Boolean>(false);
   const [cardList, setCardList] = useState<Array<Object>>([]);
+  const [personData, setPersonData] = useState<Object>({});
 
   //Get initial records from DynamoDB
   useEffect(() => {
       async function fetchAllArticles() {
         const result = await axios(
-          '/news-reader/all',
+          '/news-reader/people',
         ).catch((err)=>{
           console.log("request failed.");
         });
@@ -151,9 +131,32 @@ export default function Home() {
   );
 
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (fullName : string) => {
+    //Get person's video clip data, update personData
+    //getPersonData(fullName);
     setOpen(true);
   };
+
+  /*
+  const getPersonData = (fullName : string) => {
+    async function fetchClipsByPerson () {
+      const result : any = await axios.post(
+        'http://localhost:5000/news-reader/clips', {params : {fullName}}
+      ).catch((err)=>{
+        console.log("request failed.");
+      });
+      if (result != null){
+        setPersonData(result);
+      } else {
+        const data = {items: [ {name: 'clip1'},  {name: 'clip1'}, {name: 'clip1'}]};
+        setPersonData(data);
+      }
+      console.log(personData);
+    };
+    fetchClipsByPerson();
+  }
+  */
+
 
   const handleClose = (value : any) => {
     setOpen(false);
@@ -195,22 +198,26 @@ export default function Home() {
       </AppBar>
 
         <Toolbar />
-        <Container className={classes.intro} maxWidth="sm">
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            className={classes.font}
-            gutterBottom
-          >
-            News Reader
-          </Typography>
-          <Typography variant="h5" align="center" className={classes.subFont} paragraph>
-            News Reader combines Symbl.ai and ML to create and store compact 
-            summaries from news audio clips.
-            The following are examples using clips from C-Span.
-          </Typography>
-        </Container>
+
+      {/* 
+      <Container className={classes.intro} maxWidth="sm">
+        <Typography
+          component="h1"
+          variant="h2"
+          align="center"
+          className={classes.font}
+          gutterBottom
+        >
+          News Reader
+        </Typography>
+        <Typography variant="h5" align="center" className={classes.subFont} paragraph>
+          News Reader combines Symbl.ai and ML to create and store compact 
+          summaries from news audio clips.
+          The following are examples using clips from C-Span.
+        </Typography>
+      </Container>
+      */}
+
 
       <Container sx={{ py: 8 }} maxWidth="md">
         {/* End hero unit */}
@@ -236,9 +243,12 @@ export default function Home() {
 
       {/* End footer */}
     </ThemeProvider>
+
+    {/* Details Dialog Box */}
     <Details
         open={open}
         onClose={handleClose}
+        data={personData}
     />
     </div>
   );
