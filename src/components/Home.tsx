@@ -210,23 +210,28 @@ export default function Home() {
         >
           News Reader
         </Typography>
-        <Typography variant="h5" align="center" className={classes.subFont} paragraph>
-          News Reader combines Symbl.ai and ML to create and store compact 
-          summaries from news audio clips.
-          The following are examples using clips from C-Span.
+        <Typography variant="h6" align="center" className={classes.subFont} paragraph>
+          Candidate Clip combines Symbl.ai and Machine Learning to create a catalogue of speaking points from various candidates.
+        </Typography>
+        <Typography variant="h6" align="center" className={classes.subFont} paragraph>
+        The main topics and interests of candiates are found and viewable from this easy to use web app.
+        </Typography>
+        <Typography variant="h6" align="center" className={classes.subFont} paragraph>
+          The following is an example using candiates and video clips from upcoming local county elections.
         </Typography>
       </Container>
       
 
-
-      <Container sx={{ py: 6 }} maxWidth="md">
-        {/* End hero unit */}
+      <Container sx={{ py: 0 }} maxWidth="md">
+        <Typography variant="h3" align="center" sx={{marginBottom: '10vh'}}>
+          Candidates
+        </Typography>
         <Grid container spacing={4}>
             {renderCards(cardList, handleClickOpen)}
         </Grid>
       </Container>
-    
       </Box>
+
 
     {/* Footer */}
     <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
@@ -259,7 +264,6 @@ function Copyright() {
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © NewsReader Hackathon Team '}
       {new Date().getFullYear()}
-      {'.'}
     </Typography>
   );
 }

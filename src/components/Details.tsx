@@ -1,26 +1,21 @@
 import * as React from 'react';
-import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import { Typography, Link, Box } from '@mui/material';
+import { Typography, Button, Box } from '@mui/material';
 
 
 const renderTopicClips = (topicClips : any) => {
-  console.log(topicClips);
   return (
     <div>
       {  
         topicClips.map((topic : any)=>{
-          console.log("here");
-          console.log(topic);
           return (
             <div>
-              <Typography variant="h6">{topic.TopicName}</Typography>
+              <Typography variant="h6" sx={{margin: '10px'}}>{topic.TopicName}</Typography>
               {topic.clips.map((clip : any)=>{
                 return (
-                  <Box sx={{ display: 'flex', margin: '10px' }}> 
-                    <Typography>{clip.VideoName}</Typography>
-                    <Typography>{clip.StartTime} - {clip.EndTime}</Typography>
-                    <Link href={clip.VideoURL}> Watch </Link>
+                  <Box sx={{ display: 'flex', margin: '10px', alignItems: 'center'}}> 
+                    <Typography>{clip.VideoName} {clip.StartTime} - {clip.EndTime} </Typography>
+                    <Button href={clip.VideoURL}> Watch </Button>
                   </Box>
                 );
               })}
@@ -58,14 +53,14 @@ function Details(props : any) {
 
   return (
     <Dialog onClose={handleClose} open={open} scroll={'body'}>
-      <Box sx={{ display: 'flex', margin: '10px' }}> 
-        <img src='/images/unsplash-senate-building.jpg' height="200px" width="200px" />
-        <Box> 
-          <Typography variant="h4">{fullName}</Typography>
+      <Box sx={{display:'flex', flexDirection: 'column', alignItems:'flex-start', margin: '20px'}}>
+        <Box sx={{ display: 'flex', margin: '10px', alignItems:'flex-end'}}> 
+          <img src='/images/unsplash-senate-building.jpg' height="200px" width="200px" />
+          <Typography variant="h4" sx={{margin: '0 10px 0 10px'}}>{fullName}</Typography>
         </Box>
+        <Typography variant="h6" sx={{alignSelf: 'center'}}>Recent Discussions</Typography>
+        {renderTopicClips(topicArray)}
       </Box>
-      <Typography variant="h6">Recent Discussions</Typography>
-      {renderTopicClips(topicArray)}
     </Dialog>
   );
 }
