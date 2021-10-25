@@ -192,7 +192,7 @@ export default function Home() {
         <Toolbar className={classes.toolbar}>
           <StickyNote2Icon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
-            News Reader
+            HearingRoom
           </Typography>
         </Toolbar>
       </AppBar>
@@ -208,16 +208,13 @@ export default function Home() {
           className={classes.font}
           gutterBottom
         >
-          News Reader
+          HearingRoom
         </Typography>
         <Typography variant="h6" align="center" className={classes.subFont} paragraph>
-          Candidate Clip combines Symbl.ai and Machine Learning to create a catalogue of speaking points from various candidates.
+          HearingRoom combines Symbl.ai and Machine Learning to create a catalogue of speaking points from various political figures.
         </Typography>
         <Typography variant="h6" align="center" className={classes.subFont} paragraph>
-        The main topics and interests of candiates are found and viewable from this easy to use web app.
-        </Typography>
-        <Typography variant="h6" align="center" className={classes.subFont} paragraph>
-          The following is an example using candiates and video clips from upcoming local county elections.
+        The main topics and interests of figures are viewable from this easy to use web app.
         </Typography>
       </Container>
       
@@ -262,7 +259,7 @@ export default function Home() {
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © NewsReader Hackathon Team '}
+      {'Copyright © HearingRoom Hackathon Team '}
       {new Date().getFullYear()}
     </Typography>
   );
