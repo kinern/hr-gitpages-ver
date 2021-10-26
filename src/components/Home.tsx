@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent,
   CardMedia,
   Container,
   CssBaseline,
@@ -21,7 +20,6 @@ import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import Details from './Details';
 import axios from 'axios';
 
-import NavBar from './NavBar';
 import Intro from './Intro';
 
 const theme = createTheme();
@@ -120,7 +118,7 @@ export default function Home() {
   useEffect(() => {
       async function fetchAllArticles() {
         const result = await axios(
-          'http://localhost:5000/news-reader/all-people',
+          '/news-reader/all-people',
         ).catch((err)=>{
           console.log("request failed.");
         });
@@ -141,7 +139,7 @@ export default function Home() {
   const getPersonData = (fullName : string) => {
     async function fetchClipsByPerson () {
       const result : any = await axios.post(
-        'http://localhost:5000/news-reader/person-details', {params : {fullName}}
+        '/news-reader/person-details', {params : {fullName}}
       ).catch((err)=>{
         console.log("request failed.");
       });
