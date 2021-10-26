@@ -4,7 +4,7 @@ import { Typography, Button, Box, List, ListItem, Avatar } from '@mui/material';
 
 
 
-const renderTopicClips = (topics : any) => {
+const renderTopicClips = (topics : any, classes : any) => {
 
   const topicArr : any = [];
   for (const [key, value] of Object.entries(topics)){
@@ -13,6 +13,12 @@ const renderTopicClips = (topics : any) => {
 
   // topicArr structure => [{TopicName: "taxes", clips [{VideoName: "name", TimestampURL: "http://..."}] }, {...}]
 
+  const detailsVideoNameStyles = {
+    marginRight: '20px',
+    '@media (max-width: 600px)' :{
+      fontSize: '0.8em !important', 
+    }
+  };
   
   return (
     <div>
@@ -24,7 +30,7 @@ const renderTopicClips = (topics : any) => {
               {topic.clips.map((clip : any)=>{
                 return (
                   <Box sx={{ display: 'flex', margin: '10px', alignItems: 'center'}}> 
-                    <Typography sx={{marginRight: '20px'}}><strong>{clip.VideoName}</strong></Typography>
+                    <Typography sx={detailsVideoNameStyles}>{clip.VideoName}</Typography>
                     <Button href={clip.TimestampURL} variant="outlined"> Watch </Button>
                   </Box>
                 );
@@ -63,7 +69,7 @@ const renderInfo = (infoObj : any) =>{
 }
 
 function Details(props : any) {
-  const { onClose, selectedValue, open, data } = props;
+  const { onClose, selectedValue, open, data, classes } = props;
 
   if (!data.hasOwnProperty('data')) return null;
   const personData = data.data.Items[0];
@@ -76,7 +82,7 @@ function Details(props : any) {
   return (
     <Dialog onClose={handleClose} open={open} scroll={'body'}>
       <Box sx={{display:'flex', flexDirection: 'column', alignItems:'flex-start', margin: '20px'}}>
-        <Box sx={{ display: 'flex', margin: '10px', alignItems:'flex-end'}}> 
+        <Box className={classes.detailsInfoContainer}> 
           
           <Avatar 
           alt={fullName}
@@ -85,13 +91,13 @@ function Details(props : any) {
           variant="rounded"
           />
 
-          <Box sx={{display: 'flex', flexDirection: 'column', margin: '10px'}}>
-            <Typography variant="h4">{personData.FullName}</Typography>
+          <Box className={classes.detailsInfoTextContainer}>
+            <Typography variant="h4" className={classes.detailsInfoName}>{personData.FullName}</Typography>
             {renderInfo(personData.Info)}
           </Box>
         </Box>
         <Typography variant="h5" sx={{alignSelf: 'center', marginTop: '20px'}}>Recent Discussions</Typography>
-        {renderTopicClips(personData.Topics)}
+        {renderTopicClips(personData.Topics, classes)}
       </Box>
     </Dialog>
   );

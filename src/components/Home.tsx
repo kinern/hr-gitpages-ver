@@ -78,6 +78,30 @@ const useStyles = makeStyles((theme : any) => ({
       fontSize: '2.4rem !important',
       textAlign: 'center !important',
     }
+  },
+  detailsInfoContainer: {
+    display: 'flex', 
+    margin: '10px', 
+    alignItems:'flex-end',
+    '@media (max-width: 600px)' : {
+      flexDirection: 'column',
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+  },
+  detailsInfoName: {
+    '@media (max-width: 600px)' :{
+      fontSize: '1.4rem !important',
+      textAlign: 'center',
+    },
+  },
+  detailsInfoTextContainer: {
+    display: 'flex', 
+    flexDirection: 'column', 
+    margin: '10px',
+    '@media (max-width: 600px)' :{
+      margin: '0px',
+    },
   }
 }));
 
@@ -243,6 +267,7 @@ export default function Home() {
         open={open}
         onClose={handleClose}
         data={personData}
+        classes={classes}
     />
     </div>
   );
