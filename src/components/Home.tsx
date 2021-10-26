@@ -15,11 +15,13 @@ import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
 import {makeStyles} from '@mui/styles';
 
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 
 import Details from './Details';
 import axios from 'axios';
 
 import NavBar from './NavBar';
+import Intro from './Intro';
 
 const theme = createTheme();
 
@@ -37,6 +39,20 @@ const useStyles = makeStyles((theme : any) => ({
   },
   subFont : {
     color: "#696969",
+  },
+  introTitle : {
+    color: "#222",
+    textAlign: 'left', 
+    whiteSpace: 'nowrap'
+  },
+  introSubtitle: {
+    color: "#696969",
+    textAlign: 'left', 
+  },
+  footer: {
+    backgroundColor: '#5B8C5A',
+    color: '#fff',
+    marginTop: '20vh'
   }
 }));
 
@@ -190,38 +206,20 @@ export default function Home() {
       }}
       >
         <Toolbar className={classes.toolbar}>
-          <StickyNote2Icon sx={{ mr: 2 }} />
+          <SpeakerNotesIcon sx={{ mr: 2, fontSize: 40 }} />
           <Typography variant="h6" color="inherit" noWrap>
             HearingRoom
           </Typography>
         </Toolbar>
       </AppBar>
 
-        <Toolbar />
+      <Toolbar />
 
-       
-      <Container className={classes.intro} maxWidth="sm">
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          className={classes.font}
-          gutterBottom
-        >
-          HearingRoom
-        </Typography>
-        <Typography variant="h6" align="center" className={classes.subFont} paragraph>
-          HearingRoom combines Symbl.ai and Machine Learning to create a catalogue of speaking points from various political figures.
-        </Typography>
-        <Typography variant="h6" align="center" className={classes.subFont} paragraph>
-        The main topics and interests of figures are viewable from this easy to use web app.
-        </Typography>
-      </Container>
-      
+      <Intro classes={classes}/>
 
-      <Container sx={{ py: 0 }} maxWidth="md">
-        <Typography variant="h3" align="center" sx={{marginBottom: '10vh'}}>
-          Candidates
+      <Container sx={{ py: 0 }} maxWidth="lg">
+        <Typography variant="h3" align="left" sx={{marginBottom: '10vh'}}>
+          Speakers
         </Typography>
         <Grid container spacing={4}>
             {renderCards(cardList, handleClickOpen)}
@@ -231,13 +229,8 @@ export default function Home() {
 
 
     {/* Footer */}
-    <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-      <Typography
-        variant="subtitle1"
-        align="center"
-        color="text.secondary"
-        component="p"
-      >
+    <Box sx={{ p: 6 }} className={classes.footer} component="footer">
+      <Typography variant="subtitle1" align="center" component="p">
         Thanks for checking out our hackathon project!
       </Typography>
       <Copyright />
@@ -258,7 +251,7 @@ export default function Home() {
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" align="center">
+    <Typography variant="body2" align="center">
       {'Copyright © HearingRoom Hackathon Team '}
       {new Date().getFullYear()}
     </Typography>
