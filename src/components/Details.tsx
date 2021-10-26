@@ -3,19 +3,27 @@ import Dialog from '@mui/material/Dialog';
 import { Typography, Button, Box } from '@mui/material';
 
 
-const renderTopicClips = (topicClips : any) => {
+const renderTopicClips = (topics : any) => {
+
+  const topicArr : any = [];
+  for (const [key, value] of Object.entries(topics)){
+    topicArr.push({TopicName: key, clips: value});
+  }
+
+  // topicArr structure => [{TopicName: "taxes", clips [{VideoName: "name", TimestampURL: "http://..."}] }, {...}]
+
   return (
     <div>
       {  
-        topicClips.map((topic : any)=>{
+        topicArr.map((topic : any)=>{
           return (
             <div>
               <Typography variant="h6" sx={{margin: '10px'}}>{topic.TopicName}</Typography>
               {topic.clips.map((clip : any)=>{
                 return (
                   <Box sx={{ display: 'flex', margin: '10px', alignItems: 'center'}}> 
-                    <Typography>{clip.VideoName} {clip.StartTime} - {clip.EndTime} </Typography>
-                    <Button href={clip.VideoURL}> Watch </Button>
+                    <Typography>{clip.VideoName} </Typography>
+                    <Button href={clip.TimestampURL}> Watch </Button>
                   </Box>
                 );
               })}
@@ -27,25 +35,12 @@ const renderTopicClips = (topicClips : any) => {
   );
 }
 
-const getTopicArrFromData = (personData: any) => {
-  const topicObj : any = {};
-  personData.forEach((item: any)=>{
-    if (!topicObj.hasOwnProperty(item.TopicName)){
-      topicObj[item.TopicName] = {TopicName: item.TopicName, clips: []};
-    } 
-    topicObj[item.TopicName].clips.push(item);
-  });
-  let topicArray = Object.keys(topicObj).map((k) => topicObj[k])
-  return topicArray;
-}
-
-
 function Details(props : any) {
   const { onClose, selectedValue, open, data } = props;
-  const topicArray = (data.hasOwnProperty('data'))? getTopicArrFromData(data.data) : [];
 
-  //TODO : get fullname from person record
-  const fullName = (data.hasOwnProperty('data'))? topicArray[0].clips[0].PersonFullName : "";
+  if (!data.hasOwnProperty('data')) return null;
+  const personData = data.data.Items[0];
+  const fullName = personData.FullName;
 
   const handleClose = () => {
     onClose(selectedValue);
@@ -55,11 +50,12 @@ function Details(props : any) {
     <Dialog onClose={handleClose} open={open} scroll={'body'}>
       <Box sx={{display:'flex', flexDirection: 'column', alignItems:'flex-start', margin: '20px'}}>
         <Box sx={{ display: 'flex', margin: '10px', alignItems:'flex-end'}}> 
-          <img src='/images/unsplash-senate-building.jpg' height="200px" width="200px" />
-          <Typography variant="h4" sx={{margin: '0 10px 0 10px'}}>{fullName}</Typography>
+          <img src={personData.Headshot} height="200px" width="200px" />
+          <Typography variant="h4" sx={{margin: '0 10px 0 10px'}}>{personData.FullName}</Typography>
+          <Typography>{/*personData.Info*/}</Typography>
         </Box>
         <Typography variant="h6" sx={{alignSelf: 'center'}}>Recent Discussions</Typography>
-        {renderTopicClips(topicArray)}
+        {renderTopicClips(personData.Topics)}
       </Box>
     </Dialog>
   );

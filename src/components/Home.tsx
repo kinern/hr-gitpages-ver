@@ -1,20 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import {
+  AppBar,
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Container,
+  CssBaseline,
+  Grid,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 
-import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 
 import Details from './Details';
@@ -71,7 +72,7 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
               className="card-img"
               component="img"
               sx={{width:'180px', height: '240px'}}
-              image={item.imageUrl}
+              image={item.Headshot}
               alt="random"
               />
             </CardContent>
@@ -87,21 +88,6 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
 }
 
 const ParseDataToCardList = (result: any) => {
-
-  /*
-  //Test data
-  var cardList : Array<Object> = [
-    {
-      'imageUrl' : '/images/unsplash-senate-building.jpg',
-      'FullName' : 'John Smith',
-    },
-    {
-      'imageUrl' : '/images/unsplash-senate-building.jpg',
-      'FullName' : 'Joe Perry',
-      
-    }
-  ];
-  */
   
   if (result === undefined || !result.hasOwnProperty('data')){
     console.log("Err - Person query result undefined.");
@@ -113,8 +99,9 @@ const ParseDataToCardList = (result: any) => {
 
   //Iterate through DynamoDB table items.
   Items.forEach(function (item: any) {
+    console.log(item.Headshot);
     const el = {
-      'imageUrl' : '/images/unsplash-senate-building.jpg', 
+      'Headshot' : item.Headshot, 
       'FullName' : item.FullName
     };
     cardList.push(el);
@@ -137,7 +124,7 @@ export default function Home() {
   useEffect(() => {
       async function fetchAllArticles() {
         const result = await axios(
-          '/news-reader/people',
+          '/news-reader/all-people',
         ).catch((err)=>{
           console.log("request failed.");
         });
@@ -158,17 +145,14 @@ export default function Home() {
   const getPersonData = (fullName : string) => {
     async function fetchClipsByPerson () {
       const result : any = await axios.post(
-        '/news-reader/clips', {params : {fullName}}
+        '/news-reader/person-details', {params : {fullName}}
       ).catch((err)=>{
         console.log("request failed.");
       });
       if (result != null){
         setPersonData(result);
-      } else {
-        const data = {};
-        setPersonData(data);
-      }
-      setOpen(true);
+        setOpen(true);
+      } 
     };
     fetchClipsByPerson();
   }
@@ -184,10 +168,6 @@ export default function Home() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      {/* Side Navigation Bar */}
-      {/*<NavBar />*/}
-
-      {/* Hero unit */}
       <Box
         sx={{
           display: 'flex',
@@ -195,7 +175,6 @@ export default function Home() {
           bgcolor: 'background.paper',
           flexGrow: 1, 
           p: 0, 
-          //width: { sm: `calc(100% + ${drawerWidth}px)`}
         }}
       >
 
