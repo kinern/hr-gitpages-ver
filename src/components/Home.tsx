@@ -66,20 +66,16 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
         <Card
           sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}
         >
-          <Box sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
-            <CardContent>
-              <CardMedia
-              className="card-img"
-              component="img"
-              sx={{width:'180px', height: '240px'}}
-              image={item.Headshot}
-              alt="random"
-              />
-            </CardContent>
-            <CardActions sx={{display:'flex', justifyContent: 'center', alignItems: 'center'}}>
-              <Button size="small" onClick={()=>handleClickOpen(item.FullName)}>{item.FullName}</Button>
-            </CardActions>
-          </Box>
+            <CardMedia
+            className="card-img"
+            component="img"
+            sx={{ height: '240px'}}
+            image={item.Headshot}
+            alt={item.FullName}
+            />
+          <CardActions sx={{display:'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Button size="small" onClick={()=>handleClickOpen(item.FullName)}>{item.FullName}</Button>
+          </CardActions>
         </Card>
       </Grid>
       ))}
@@ -124,7 +120,7 @@ export default function Home() {
   useEffect(() => {
       async function fetchAllArticles() {
         const result = await axios(
-          '/news-reader/all-people',
+          'http://localhost:5000/news-reader/all-people',
         ).catch((err)=>{
           console.log("request failed.");
         });
@@ -145,7 +141,7 @@ export default function Home() {
   const getPersonData = (fullName : string) => {
     async function fetchClipsByPerson () {
       const result : any = await axios.post(
-        '/news-reader/person-details', {params : {fullName}}
+        'http://localhost:5000/news-reader/person-details', {params : {fullName}}
       ).catch((err)=>{
         console.log("request failed.");
       });
