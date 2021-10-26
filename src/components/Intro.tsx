@@ -11,7 +11,7 @@ const Intro = (props : any) => {
             See clips from public speakers,
             </Typography>
             <Typography variant="h3" className={classes.introTitle} gutterBottom>
-            with <strong>topics you care about.</strong>
+            with <Box component="span" fontWeight='bold'>topics you care about.</Box>
             </Typography>
             <div style={{marginTop: '45px'}}>
             <Typography variant="h6" className={classes.introSubtitle} paragraph>

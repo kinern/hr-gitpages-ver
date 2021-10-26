@@ -22,9 +22,19 @@ import axios from 'axios';
 
 import Intro from './Intro';
 
-const theme = createTheme();
-
 const drawerWidth = 240;
+
+const theme = createTheme();
+theme.typography.h3 = {
+  fontWeight:'normal',
+  color: "#222",
+  whiteSpace: 'normal',
+  fontSize: '2rem',
+    '@media (min-width:600px)': {
+      whiteSpace: 'nowrap',
+    fontSize: '3rem',
+  },
+};
 
 const useStyles = makeStyles((theme : any) => ({
   toolbar: {
@@ -32,6 +42,9 @@ const useStyles = makeStyles((theme : any) => ({
   },
   intro: {
     margin: "20vh 0 20vh 0",
+    '@media (max-width: 600px)' : {
+      margin: "10vh 0 10vh 0",
+    }
   },
   font: {
     color: "#222",
@@ -42,16 +55,29 @@ const useStyles = makeStyles((theme : any) => ({
   introTitle : {
     color: "#222",
     textAlign: 'left', 
-    whiteSpace: 'nowrap'
+    '@media (max-width: 600px)' : {
+      textAlign: 'center !important',
+      marginBottom: '0px !important',
+    }
   },
   introSubtitle: {
     color: "#696969",
     textAlign: 'left', 
+    '@media (max-width: 600px)' : {
+      fontSize: '1.2rem !important',
+    }
   },
   footer: {
     backgroundColor: '#5B8C5A',
     color: '#fff',
     marginTop: '20vh'
+  },
+  speakersTitle: {
+    marginBottom: '10vh',
+    '@media (max-width: 600px)' : {
+      fontSize: '2.4rem !important',
+      textAlign: 'center !important',
+    }
   }
 }));
 
@@ -191,7 +217,7 @@ export default function Home() {
       <Intro classes={classes}/>
 
       <Container sx={{ py: 0 }} maxWidth="lg">
-        <Typography variant="h3" align="left" sx={{marginBottom: '10vh'}}>
+        <Typography variant="h3" align="left" className={classes.speakersTitle}>
           Speakers
         </Typography>
         <Grid container spacing={4}>
