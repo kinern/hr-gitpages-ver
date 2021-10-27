@@ -11,8 +11,6 @@ const renderTopicClips = (topics : any, classes : any) => {
     topicArr.push(value);
   }
 
-  console.log(topicArr);
-
   // topicArr structure => [{TopicName: "taxes", clips [{VideoName: "name", TimestampURL: "http://..."}] }, {...}]
 
   const detailsVideoNameStyles = {
@@ -109,9 +107,6 @@ const renderInfo = (infoObj : any) =>{
 
 function Details(props : any) {
   const { onClose, selectedValue, open, data, classes } = props;
-
-  console.log(data);
-  console.log('here');
 
   if (!data.hasOwnProperty('data')) return null;
   const personData = data.data.Items[0];

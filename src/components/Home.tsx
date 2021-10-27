@@ -183,7 +183,6 @@ export default function Home() {
 
   const handleClickOpen = (id : string) => {
     //Get person's video clip data, update personData
-    console.log("clicked");
     getPersonData(id);
   };
 
@@ -194,8 +193,6 @@ export default function Home() {
       ).catch((err)=>{
         console.log("request failed.");
       });
-      console.log('result below...');
-      console.log(result);
       if (result != null){
         setPersonData(result);
         setOpen(true);
