@@ -110,7 +110,7 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
   return (
     <React.Fragment>
       {cardData.map((item : any)=>(
-        <Grid item key={item.title} xs={12} sm={6} md={4}>
+        <Grid item key={item.name} xs={12} sm={6} md={4}>
         <Card
           sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}
         >
@@ -118,11 +118,11 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
             className="card-img"
             component="img"
             sx={{ height: '240px'}}
-            image={item.Headshot}
-            alt={item.FullName}
+            image={`https://news-reader-0.s3.us-west-2.amazonaws.com/people/${item.id}/${item.headshot}`}
+            alt={item.name}
             />
           <CardActions sx={{display:'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Button size="small" onClick={()=>handleClickOpen(item.FullName)}>{item.FullName}</Button>
+            <Button size="small" onClick={()=>handleClickOpen(item.id)}>{item.name}</Button>
           </CardActions>
         </Card>
       </Grid>
@@ -143,10 +143,10 @@ const ParseDataToCardList = (result: any) => {
 
   //Iterate through DynamoDB table items.
   Items.forEach(function (item: any) {
-    console.log(item.Headshot);
     const el = {
-      'Headshot' : item.Headshot, 
-      'FullName' : item.FullName
+      'id' : item.id,
+      'headshot' : item.headshot, 
+      'name' : item.name
     };
     cardList.push(el);
   });
@@ -168,7 +168,7 @@ export default function Home() {
   useEffect(() => {
       async function fetchAllArticles() {
         const result = await axios(
-          '/news-reader/all-people',
+          '/news-reader/all-people', //keep this, just change database table
         ).catch((err)=>{
           console.log("request failed.");
         });
@@ -181,18 +181,21 @@ export default function Home() {
   );
 
 
-  const handleClickOpen = (fullName : string) => {
+  const handleClickOpen = (id : string) => {
     //Get person's video clip data, update personData
-    getPersonData(fullName);
+    console.log("clicked");
+    getPersonData(id);
   };
 
-  const getPersonData = (fullName : string) => {
+  const getPersonData = (id : string) => {
     async function fetchClipsByPerson () {
       const result : any = await axios.post(
-        '/news-reader/person-details', {params : {fullName}}
+        '/news-reader/person-details', {params : {id}}
       ).catch((err)=>{
         console.log("request failed.");
       });
+      console.log('result below...');
+      console.log(result);
       if (result != null){
         setPersonData(result);
         setOpen(true);
