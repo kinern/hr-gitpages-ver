@@ -30,7 +30,7 @@ const renderTopicClips = (topics : any, classes : any) => {
             <div>
               <Typography variant="h6" sx={{margin: '10px'}}>{capitalize(topic.topic)}</Typography>
                 <Box sx={{ display: 'flex', margin: '10px', alignItems: 'center'}}> 
-                  <Typography sx={detailsVideoNameStyles}>{topic.video_name}</Typography>
+                  <Typography sx={detailsVideoNameStyles}>{topic.video_name} @ {toTimestring(topic.start_time)}</Typography>
                   <Button href={topic.timestamped_url} variant="outlined"> Watch</Button>
                 </Box>
             </div>
@@ -40,6 +40,8 @@ const renderTopicClips = (topics : any, classes : any) => {
     </div>
   );
 
+  
+  
   {/* Original JSON formatting version 
   return (
     <div>
@@ -66,8 +68,8 @@ const renderTopicClips = (topics : any, classes : any) => {
 
 }
 
-const toTimestring = (timeInt : Number) => {
-  var sec_num : any = timeInt; // don't forget the second param
+const toTimestring = (timeInt : any) => {
+  var sec_num : any = timeInt / 1000; // don't forget the second param
   var hours : any  = Math.floor(sec_num / 3600);
   var minutes : any = Math.floor((sec_num - (hours * 3600)) / 60);
   var seconds : any = sec_num - (hours * 3600) - (minutes * 60);
@@ -75,7 +77,9 @@ const toTimestring = (timeInt : Number) => {
   if (hours   < 10) {hours   = "0"+hours;}
   if (minutes < 10) {minutes = "0"+minutes;}
   if (seconds < 10) {seconds = "0"+seconds;}
-  return hours+':'+minutes+':'+seconds;
+  var t = hours+':'+minutes+':'+seconds;
+  t = t.substr(0, t.lastIndexOf("."));
+  return t;
 }
 
 const capitalize = (s : string) =>
