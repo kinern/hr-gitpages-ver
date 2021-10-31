@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme : any) => ({
     marginTop: '20vh'
   },
   speakersTitle: {
-    marginBottom: '10vh',
+    marginBottom: '0 10vh 0 10vh',
     '@media (max-width: 600px)' : {
       fontSize: '2.4rem !important',
       textAlign: 'center !important',
@@ -239,6 +239,29 @@ export default function Home() {
       <Toolbar />
 
       <Intro classes={classes}/>
+
+      <Box sx={{
+        width: '100%', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        marginBottom: '10vh',
+        }}>
+        <Box sx={{
+          display : 'flex', 
+          flexDirection: 'column', 
+          maxWidth: '600px',
+          border: '1px solid #CCCCCC',
+          padding: '16px'
+        }}>
+          <Typography variant="h5">Disclaimer</Typography>
+          <Typography color="#696969" sx={{marginTop: '10px'}}>
+            The following is a prototype that was built for the API:World 2021 Hackathon.
+            There may be errors or inaccurate information from the data gathered.
+            Please use this site at your own discretion.
+          </Typography>
+        </Box>
+      </Box>
 
       <Container sx={{ py: 0 }} maxWidth="lg">
         <Typography variant="h3" align="left" className={classes.speakersTitle}>
