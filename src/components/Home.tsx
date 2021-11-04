@@ -16,6 +16,7 @@ import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 import Details from './Details';
 import axios from 'axios';
@@ -280,6 +281,14 @@ export default function Home() {
         Thanks for checking out our hackathon project!
       </Typography>
       <Copyright />
+      <Button 
+        href="https://github.com/Qustom/hearing-room"
+        target="_blank" 
+        rel="noopener noreferrer"
+        sx={{marginTop: '10px'}}
+      >
+        <GitHubIcon sx={{ mr: 2, fontSize: 40, color: '#fff' }} />
+      </Button>
     </Box>
 
       {/* End footer */}
