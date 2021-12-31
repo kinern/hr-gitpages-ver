@@ -39,30 +39,6 @@ const renderTopicClips = (topics : any, classes : any) => {
   );
 
   
-  
-  {/* Original JSON formatting version 
-  return (
-    <div>
-      {  
-        topicArr.map((topic : any)=>{
-          return (
-            <div>
-              <Typography variant="h6" sx={{margin: '10px'}}>{capitalize(topic.TopicName)}</Typography>
-              {topic.clips.map((clip : any)=>{
-                return (
-                  <Box sx={{ display: 'flex', margin: '10px', alignItems: 'center'}}> 
-                    <Typography sx={detailsVideoNameStyles}>{clip.VideoName}</Typography>
-                    <Button href={clip.TimestampURL} variant="outlined"> Watch </Button>
-                  </Box>
-                );
-              })}
-            </div>
-          );
-        })
-      }
-    </div>
-  );
-  */}
 
 }
 
@@ -108,8 +84,10 @@ const renderInfo = (infoObj : any) =>{
 function Details(props : any) {
   const { onClose, selectedValue, open, data, classes } = props;
 
-  if (!data.hasOwnProperty('data')) return null;
-  const personData = data.data.Items[0];
+  console.log(data);
+
+  if (Object.keys(data).length === 0) return null;
+  const personData = data;
   const fullName = personData.name;
 
   const handleClose = () => {
@@ -123,7 +101,7 @@ function Details(props : any) {
           
           <Avatar 
           alt={fullName}
-          src={`https://news-reader-0.s3.us-west-2.amazonaws.com/people/${personData.id}/${personData.headshot}`}
+          src={`/images/people/${personData.id}/${personData.headshot}`}
           sx={{ height: 200, width: 200 }}
           variant="rounded"
           />

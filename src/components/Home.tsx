@@ -23,6 +23,8 @@ import axios from 'axios';
 
 import Intro from './Intro';
 
+import peopleData from '../peopleData';
+
 const drawerWidth = 240;
 
 const theme = createTheme();
@@ -119,7 +121,7 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
             className="card-img"
             component="img"
             sx={{ height: '240px'}}
-            image={`https://news-reader-0.s3.us-west-2.amazonaws.com/people/${item.id}/${item.headshot}`}
+            image={`/images/people/${item.id}/${item.headshot}`}
             alt={item.name}
             />
           <CardActions sx={{display:'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -132,29 +134,19 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
   )
 }
 
-const ParseDataToCardList = (result: any) => {
-  
-  if (result === undefined || !result.hasOwnProperty('data')){
-    console.log("Err - Person query result undefined.");
-    return [];
-  }
-
-  const Items = result.data.Items; 
+const ParseDataToCardList = (peopleData : any)=>{
   const cardList : any = [];
-
-  //Iterate through DynamoDB table items.
-  Items.forEach(function (item: any) {
+  peopleData.forEach(function (item:any){
     const el = {
       'id' : item.id,
-      'headshot' : item.headshot, 
+      'headshot' : item.headshot,
       'name' : item.name
     };
     cardList.push(el);
   });
-
-
   return cardList;
 }
+
 
 //Main component
 export default function Home() {
@@ -165,41 +157,26 @@ export default function Home() {
   const [cardList, setCardList] = useState<Array<Object>>([]);
   const [personData, setPersonData] = useState<Object>({});
 
-  //Get initial records from DynamoDB
-  useEffect(() => {
-      async function fetchAllArticles() {
-        const result = await axios(
-          '/news-reader/all-people', //keep this, just change database table
-        ).catch((err)=>{
-          console.log("request failed.");
-        });
-        const cardData = ParseDataToCardList(result);
-        setCardList(cardData);
-      };
-      fetchAllArticles();
-      },
-    []
-  );
-
+  useEffect(()=>{
+    const cardData = ParseDataToCardList(peopleData);
+    setCardList(cardData);
+  }, [peopleData]);
 
   const handleClickOpen = (id : string) => {
     //Get person's video clip data, update personData
     getPersonData(id);
   };
 
-  const getPersonData = (id : string) => {
-    async function fetchClipsByPerson () {
-      const result : any = await axios.post(
-        '/news-reader/person-details', {params : {id}}
-      ).catch((err)=>{
-        console.log("request failed.");
-      });
-      if (result != null){
-        setPersonData(result);
-        setOpen(true);
-      } 
-    };
-    fetchClipsByPerson();
+  
+  const getPersonData = (id : string)=>{
+    const personData = peopleData.filter(obj => {
+      return obj.id === id
+    })
+    if (personData.length === 0){
+      return;
+    }
+    setPersonData(personData[0]);
+    setOpen(true);
   }
 
 
