@@ -121,7 +121,7 @@ const renderCards = (cardData :any, handleClickOpen : any) => {
             className="card-img"
             component="img"
             sx={{ height: '240px'}}
-            image={`/images/people/${item.id}/${item.headshot}`}
+            image={`${window.location.href}/images/people/${item.id}/${item.headshot}`}
             alt={item.name}
             />
           <CardActions sx={{display:'flex', justifyContent: 'center', alignItems: 'center'}}>
