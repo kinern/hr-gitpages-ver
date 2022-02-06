@@ -447,7 +447,7 @@ const peopleData = [
         "info": {
             "office": "Washington State Senator"
         },
-        "headshot": "ericksen",
+        "headshot": "ericksen.jpg",
         "topics": [
             {
                 "topic": "child care",
@@ -729,7 +729,7 @@ const peopleData = [
         "info": {
             "office": "Washington State Senator"
         },
-        "headshot": "jwilson.jpg",
+        "headshot": "holy.jpg",
         "topics": [
             {
                 "topic": "house amendments",
@@ -1016,7 +1016,7 @@ const peopleData = [
         "info": {
             "office": "Washington State Senator"
         },
-        "headshot": "vandewage.jpg",
+        "headshot": "vandewege.jpg",
         "topics": [
             {
                 "topic": "drug purchasing",
