@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/hr-gitpages-ver/static/css/main.5739ad41.chunk.css",
+    "main.js": "/hr-gitpages-ver/static/js/main.02df722a.chunk.js",
+    "main.js.map": "/hr-gitpages-ver/static/js/main.02df722a.chunk.js.map",
+    "runtime-main.js": "/hr-gitpages-ver/static/js/runtime-main.5f8005ba.js",
+    "runtime-main.js.map": "/hr-gitpages-ver/static/js/runtime-main.5f8005ba.js.map",
+    "static/js/2.b90aa2f1.chunk.js": "/hr-gitpages-ver/static/js/2.b90aa2f1.chunk.js",
+    "static/js/2.b90aa2f1.chunk.js.map": "/hr-gitpages-ver/static/js/2.b90aa2f1.chunk.js.map",
+    "static/js/3.f02f1b20.chunk.js": "/hr-gitpages-ver/static/js/3.f02f1b20.chunk.js",
+    "static/js/3.f02f1b20.chunk.js.map": "/hr-gitpages-ver/static/js/3.f02f1b20.chunk.js.map",
+    "index.html": "/hr-gitpages-ver/index.html",
+    "static/css/main.5739ad41.chunk.css.map": "/hr-gitpages-ver/static/css/main.5739ad41.chunk.css.map",
+    "static/js/2.b90aa2f1.chunk.js.LICENSE.txt": "/hr-gitpages-ver/static/js/2.b90aa2f1.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5f8005ba.js",
+    "static/js/2.b90aa2f1.chunk.js",
+    "static/css/main.5739ad41.chunk.css",
+    "static/js/main.02df722a.chunk.js"
+  ]
+}
